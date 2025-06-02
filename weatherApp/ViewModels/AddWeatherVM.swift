@@ -7,21 +7,29 @@
 
 import Foundation
 class AddWeatherVM {
+  
     func addWeather( for city : String,completion : @escaping (WeatherVm)->()){
-        guard let weatherURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=40ca58efce193db0fc801564afb08283&Unit=Metric") else {
-            fatalError("URL Error")
+        guard let apiKey = KeychainHelper.shared.read(key: "weatherAPIKey") else {
+            fatalError("API Key not found in Keychain")
         }
+        guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)") else {
+            fatalError("URL Error")
+            
+        }
+        print("apiKey\(apiKey) ")
+        
         let resource = Resource<WeatherResponse> (url: weatherURL){ response in
             return try? JSONDecoder().decode(WeatherResponse.self, from: response)
         }
         WebSevices().loadData(resource: resource){response in
-                    if let response = response{
-                        let vm = WeatherVm(weather : response)
-                        completion(vm)
-                        print(response)
-                    }
-        
-                }
+            if let response = response{
+                let vm = WeatherVm(weather : response)
+                completion(vm)
+                print(response)
+                
+            }
+            
+        }
     }
 }
 

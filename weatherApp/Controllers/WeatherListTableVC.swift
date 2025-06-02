@@ -17,30 +17,8 @@ class WeatherListTableVC : UITableViewController , AddweatherDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        guard let weatherURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=London&appid=40ca58efce193db0fc801564afb08283&Unit=Metric") else {
-            fatalError("URL Error")
-        }
-//        let resource = Resource<WeatherResponse> (url: weatherURL){ response in
-//            return try? JSONDecoder().decode(WeatherResponse.self, from: response)
-//            
-//        }
-//        WebSevices().loadData(resource: resource){response in
-//            if let response = response{
-//                print(response)
-//            }
-//            
-//        }
-//        URLSession.shared.dataTask(with: weatherURL){ data , response ,error in
-//            if let data = data {
-//                DispatchQueue.main.async{
-//                   print(try? JSONDecoder().decode(WeatherResponse.self, from: data)) 
-//                }
-//                print(data)
-//            }else{
-//                 
-//            }
-//        }.resume()
-        
+        KeychainHelper.shared.save(key: "weatherAPIKey", value: "40ca58efce193db0fc801564afb08283")
+ 
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherListVm.numOfRows(section)
@@ -54,7 +32,6 @@ class WeatherListTableVC : UITableViewController , AddweatherDelegate{
         }
         let weatherVM = weatherListVm.weatherAt(indexPath.row)
         cell.configure(weatherVM)
-        
         return cell
     }
     

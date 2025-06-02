@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 class AddWeatherCityVC : UIViewController{
-   private var addWeatherVM = AddWeatherVM()
+    private var addWeatherVM = AddWeatherVM()
     var delegate: AddweatherDelegate?
     @IBOutlet weak var cityNameTextField : UITextField!
     
@@ -22,8 +22,12 @@ class AddWeatherCityVC : UIViewController{
                     self.dismiss(animated: true)
                 }
             }
-            guard let weatherURL = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=40ca58efce193db0fc801564afb08283&Unit=Metric") else {
+            guard let apiKey = KeychainHelper.shared.read(key: "weatherAPIKey") else {
+                fatalError("API Key not found in Keychain")
+            }
+            guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)") else {
                 fatalError("URL Error")
+                
             }
             let resource = Resource<Any>(url: weatherURL){ data in
                 return data
