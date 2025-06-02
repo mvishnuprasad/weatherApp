@@ -12,11 +12,11 @@ class AddWeatherVM {
         guard let apiKey = KeychainHelper.shared.read(key: "weatherAPIKey") else {
             fatalError("API Key not found in Keychain")
         }
-        guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)") else {
+        guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)&units=metric") else {
             fatalError("URL Error")
             
         }
-        print("apiKey\(apiKey) ")
+        print("apiKey\(apiKey) \(weatherURL) ")
         
         let resource = Resource<WeatherResponse> (url: weatherURL){ response in
             return try? JSONDecoder().decode(WeatherResponse.self, from: response)
@@ -30,6 +30,17 @@ class AddWeatherVM {
             }
             
         }
+    }
+    
+    func getURL (city: String)-> URL{
+        guard let apiKey = KeychainHelper.shared.read(key: "weatherAPIKey") else {
+            fatalError("API Key not found in Keychain")
+        }
+        guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)&units=metric") else {
+            fatalError("URL Error")
+            
+        }
+        return weatherURL
     }
 }
 

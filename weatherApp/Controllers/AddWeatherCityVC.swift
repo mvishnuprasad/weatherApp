@@ -22,13 +22,7 @@ class AddWeatherCityVC : UIViewController{
                     self.dismiss(animated: true)
                 }
             }
-            guard let apiKey = KeychainHelper.shared.read(key: "weatherAPIKey") else {
-                fatalError("API Key not found in Keychain")
-            }
-            guard let weatherURL = URL(string: "\(url.baseUrl.rawValue)/data/2.5/weather?q=\(city)&appid=\(apiKey)") else {
-                fatalError("URL Error")
-                
-            }
+            let weatherURL =  addWeatherVM.getURL(city: city)
             let resource = Resource<Any>(url: weatherURL){ data in
                 return data
             }

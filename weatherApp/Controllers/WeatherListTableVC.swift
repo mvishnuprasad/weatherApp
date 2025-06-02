@@ -17,13 +17,14 @@ class WeatherListTableVC : UITableViewController , AddweatherDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        //Get api key from server
         KeychainHelper.shared.save(key: "weatherAPIKey", value: "40ca58efce193db0fc801564afb08283")
- 
+        
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherListVm.numOfRows(section)
     }
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 100
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
