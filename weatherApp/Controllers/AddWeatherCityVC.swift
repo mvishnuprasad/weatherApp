@@ -11,27 +11,19 @@ class AddWeatherCityVC : UIViewController{
     private var addWeatherVM = AddWeatherVM()
     var delegate: AddweatherDelegate?
     @IBOutlet weak var cityNameTextField : UITextField!
-    
     @IBAction func addCity() {
         if let city = cityNameTextField.text {
-            
-            
-            if let city = cityNameTextField.text {
                 addWeatherVM.addWeather(for: city ) {vm in
                     self.delegate?.addWeatherDidSave(vm: vm)
                     self.dismiss(animated: true)
                 }
-            }
             let weatherURL =  addWeatherVM.getURL(city: city)
             let resource = Resource<Any>(url: weatherURL){ data in
                 return data
             }
             WebSevices().loadData(resource: resource ){ result in
-                
             }
-            
         }
-        
     }
     @IBAction func close() {
         self.dismiss(animated: true)
@@ -41,8 +33,4 @@ class AddWeatherCityVC : UIViewController{
         self.cityNameTextField.resignFirstResponder()
         self.cityNameTextField.selectedTextRange = nil
     }
-}
-
-protocol AddweatherDelegate {
-    func addWeatherDidSave(vm: WeatherVm)
 }
